@@ -1,7 +1,7 @@
 
 # Nginx 配置指南
 请自行替配置文件中使用的域名 fibonacci.id 为你自己的域名，并设置A记录解析到你的主机服务器  
-下面以配置 fibonacci.id 域名为例子
+下面以配置 fibonacci.id 域名为例
 ## 安装 Nginx
 
 ### Ubuntu
@@ -39,7 +39,7 @@ sudo nano /etc/nginx/sites-available/fibonacci.id
 ```nginx
 server {
     listen 80;
-    server_name fibonacci.id; //实际部署时，无比将 fibonacci.id 改为你的域名
+    server_name fibonacci.id; #实际部署时，无比将 fibonacci.id 改为你的域名
 
     location / {
         proxy_pass http://localhost:8002;
@@ -70,5 +70,5 @@ sudo systemctl reload nginx
 ```
 
 现在，您应该可以通过访问 `http://fibonacci.id` 来看到相应的内容。  
-（实际部署时，无比将 fibonacci.id 改为你的域名）
+（实际部署时，务必将 fibonacci.id 替换为你自己的域名）
 
