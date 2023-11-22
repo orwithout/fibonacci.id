@@ -1,0 +1,231 @@
+     演示：http://sensevine.com
+
+〇、说明
+     1、SenseURL（智慧url）概念：
+     得益于云服务发展，人人可以轻易搭建个一个主页（得到一个网址），例如 https://example.com/helen
+     扩充主页的功能，比如加入人工智能、爬虫，让它能自动爬取和整理数据……直到能代替自己自动处理互联网上的事务，成为自己的一个互联网事务代理人。
+     人人都使用自己的主页来互加好友、互相聊天。那这就是一个完美的去中心化聊天软件。
+     理论上，手机也是可以启动网址的
+     这样的主页的网址，可以称为senseurl（智慧url）
+     url本身具有全球唯一性，因此可以直接使用url来作为个人的网络id，例如：example.com/helen（类似电子邮箱 helen@example.com）
+
+     2、SNI代理、https代理
+     
+
+     2、评论文档概念：
+     将任何一篇文章、文档，用一个ipfs的内容哈希（CID）来记录。
+     将文章或文档按顺序进行拆分，每个部分都是对此uuid的按序的“评论”.
+     因此一份文档本质上可视为是一个讨论帖与评论没有区别，也有一个uuid。示例:
+     //文档uuid_0
+     {
+          "id": uuid_0,
+          "Committer": senseurl_0,  //评论者的senseurl,例如example.com/helen
+          "timestamp": 2021-01-01 12:00:00 UTC, //评论时间
+          "content"：URL_0  //超链接URL（也可以是ipfs网络的内容哈希）指向具体的内容,例如https://example.com/helen/uuid_0
+     }
+
+     //评论uuid_1（针对uuid_0）
+     {
+          "id": uuid_1,
+          "Committer": senseurl_1,
+          "Comments on": uuid_0,
+          "timestamp": 2021-01-01 12:00:00 UTC, //评论时间
+          "content"：URL_1
+     }
+     
+     //评论uuid_2（针对uuid_0）
+     {
+          "id": uuid_2,
+          "Committer": senseurl_2,
+          "Comments on": uuid_0,
+          "timestamp": 2021-01-01 12:00:00 UTC, //评论时间
+          "content"：URL_2
+     }
+     
+     ……
+     再使用一个json记录所有评论的uuid，这些评论之间的关系形成一棵索引“树”，评论索引树:
+     {
+          "id": uuid_0,
+          "Comments": [uuid_1, uuid_2],
+          {
+               id: uuid_1,
+               "Comments": uuid_3
+          },
+     }
+     表述对于uuid_0存在两个评论，分别是uuid_1, uuid_2，其中uuid_1又存在一个评论uuid_3
+     这样可以使用一个函数，将json记录树渲染为web页面，呈现为一篇文档、或讨论帖。
+     因为Committer使用了senseurl，因此可以方便的将评论者的个人信息、个人网址、个人数据、个人ai模型、个人文档、个人标签、个人评论、个人收藏等等，与评论者的senseurl关联起来，形成一个个人的网络形象。
+
+     主页网络：
+     在自己的主页中存储数据、共享文档、以及提供用自己的个性化数据微调的ai模型。
+     在自己的主页中读取或下载（fork）别人的文档
+     在自己的主页中对文档追加评论，然后使用自己的主页网址签名；乃至关注别人的主页网址……
+
+     文档生成与标签网络：
+     对自己的文档打标、共享，查看别人共享的文档和打的标签，或fork，使用ai来探索标签与文库
+
+     DID数字身份：
+     上述系统不能枚举所有人的网址，如果每个人的网址中添加一个功能：在以太坊上创建一个DID记录自己的网址，并与某个指定的钱包进行“交易”，那么人人只需查询与此特定钱包的交易便可枚举所有具有网址
+     直接使用以太坊比较贵、其他：MicrosoftDID、Sovrin、uPort、Evernym、Civic、ShoCard。
+     
+     senseurl：
+     这样的主页网址 ，可能称为senseurl（智慧url）
+
+
+
+一、开通。部署的个人服务器，也可以让其他人注册自己的账号（挂靠）
+     1 认证email（必须）、邀请码（可选）
+     2 选择登录方式 ①密码、确认密码（哈希后作为auth-ID），②使用微信扫码，③oauth认证，③使用did、区块链钱包认证
+       接下来会为每个开通的人分配一个序号（自然数）作为他在本服务器的ID，称为hard-ID。服务器的拥有者的id为0
+     3 无论那种登录方式,认证成功后必须返回auth-ID，后端查询/clone/soft/auth-ID 软连接是否已存在：
+          3.1 已存在
+               3.1.1 且软连接可访问,跳过
+               3.1.2 但不可访问，删除软连接，执行3.2
+          3.2 不存在
+               3.2.1 查找/clone/hard/下最大序号{Max}
+               3.2.2 创建: /clone//hard/{Max+1}
+               3.2.3 添加文件：echo {Max+1} > /clone/hard/{Max+1}/hard-ID
+               3.2.4 添加文件：echo {auth-ID} >> /clone/hard/{Max+1}/auth-ID
+               3.2.5 添加文件：echo email >> /clone/hard/{Max+1}/email
+               可选（方便管理函数直接访问而避免搜索枚举）：
+               3.2.6 在soft/下创建软连接：auth-ID --> ../clone/hard/{Max+1}
+               3.2.7 在soft/下创建软连接：email --> ../clone/hard/{Max+1}
+     4 按本项目中的 目录结构（参考下面的 “四、附录” ） 初始化注册用户个人目录，开通后返回：
+          4.1 个人主页 http://sensevine.com/{Max+1}
+          4.2 个人管理后台 http://sensevine.com/{Max+1}/api
+
+
+二、开通后具有
+     1 匿名用户用浏览器打开http://sensevine.com/hard-ID/ 显示: @主人ID、通讯录、探索。分别点击它们会出现：
+          1.1 主人ID：登录、留言、群组、私信
+          1.2 通讯录：关注、被关注
+               1.2.1 关注：展示联系人、和新建联系人（如果有被共享）
+               1.2.2 被关注：（同上）
+          1.3 探索：（展示此主人的标签与相关内容和微调的ai）
+     2 主人登录后，@主人ID/登录 变得可展开，具体功能：
+          3.1 显示注销、添加/删除登录方式
+          3.2 添加登录方式参考 （一、3.2）
+          3.3 删除登录方式：与上面相反操作
+          3.4 管理者定期遍历没有任何登录方式的账号，每两周遍历一次，第二次遍历时删除这些账号
+     3 点击通讯录中，已存在的任何联系人，显示： @主人ID、通讯录、探索。分别点击它们会出现：
+          2.1 @主人ID：此联系人的id详情
+          2.2 通讯录：此联系人的关注、被关注 里的联系人列表
+          2.3 探索: 此联系人的共享内容
+
+三、权限
+     1 使用oauth认证 --> 得到auth-ID
+     2 生成token，存储到/clone/soft/auth-ID/JWT
+     3 前端显示token 和/clone/soft/auth-ID/hard-ID
+     4 后端通过对比/clone/soft/auth-ID/JWT 验证Token有效性
+
+
+
+四、附 目录结构
+.
+└── senseurl.com
+    └── 0
+        ├── JWT.json
+        ├── clone
+        │   ├── hard
+        │   └── soft
+        ├── id.auth
+        ├── id.email
+        ├── id.hard
+        ├── senseurl
+        │   ├── @格伦至
+        │   │   ├── 留言
+        │   │   ├── 登录
+        │   │   │   ├── 注销.py
+        │   │   │   └── 登录方式管理
+        │   │   ├── 私信
+        │   │   └── 群组
+        │   ├── 主页.htm
+        │   ├── 探索
+        │   └── 通讯录
+        │       ├── 关注
+        │       │   ├── 同其尘
+        │       │   ├── 新建.py
+        │       │   ├── 曾醉墨
+        │       │   │   └── 群组
+        │       │   └── 飒
+        │       └── 被关注
+        │           ├── 同其尘
+        │           └── 飒
+        ├── senseurl.py
+        └── senseurl0.py
+
+
+
+
+
+
+
+图标：https://remixicon.com/
+https://ionic.io/ionicons/
+
+
+
+还真是超级复杂，
+但我的思维是形象的、可能也是我的理论知识深度不够吧。我对目前我的应用，设计使用“评论单元”、ipfs网络（内容哈希、替代或补充url）、鼓励人人建立自己的api接口（存储数据、提供函数计算）。每个人可以选择将自己的评论以及维护的“评论单元索引图”（依据“评论索引图”索引各个评论内容并依据图的关系组装，便是文档或网络讨论帖，也可用以定位自己的评论所在位置）存储在自己的api中，并向外提供（使用ipfs进行加速），api向外展示的也相当于就是每个人的“在线形象”。
+
+在此，我似乎感觉，也可以使用api地址来直接作为id使用。
+1 api服务运行在计算机系统上，有了api，也就有了自己的存储空间和执行函数代码的算力，这就像是某种真实的线上“实体”，比起只有一个字符串的id,更像是各"活"着的id。
+2 直接使用api上的域名做身份认证，比如在域名的txt解析中提供相关指证。
+3 如果确实不宜直接使用api地址作为身份id，那么可考虑在api接口中提供调用私钥认证、ID、认证函数(比如通过特定接口函数请求手机等其他设备做二次认证)的身份标识功能。
+4 为区别“语义网”，暂时将这个叫做“评论单元互引网”。 是否可以基于api中存储的个人数据，或api作为id在其他人的“api”中做的“留言评论”的相互关系做身份认证？
+……
+这些只是我不成熟的一些预想，我确实选择还构想不出来直接使用个人私有的api来做身份id或甚至用来做身份认证……是否现实。
+对于人们使用自己的api地址来作为身份标识，这里还有很多没想清楚：
+
+2 
+，并使用api地址做为身份id、如果）
+
+
+
+
+
+
+人手一个api,提供个人数据和评论收集
+
+
+
+1、token授权
+2、同步书签
+3、文件json处理
+
+
+
+https://chat.openai.com/share/b1ed9526-caa7-47fe-bd2b-d144028049e9
+编辑器：
+vscode 编辑模块web: https://github.com/microsoft/monaco-editor
+stable: https://docs.slatejs.org/concepts/12-typescript
+quill： https://github.com/quilljs/quill
+hi
+npm run dev
+http://4.193.54.245:5000
+uvicorn fa:app --reload --host 0.0.0.0 --port 8000
+uvicorn au:app --reload --host 0.0.0.0 --port 8001
+uvicorn fc:app --reload --host 0.0.0.0 --port 8002
+http://4.193.54.245:8002/Dw4XJS91m0FAnGdC/abcd.txt.-_-ZfZl5WXgWRo.py
+http://4.193.54.245:8002/static/static.txt/read
+http://4.193.54.245:8003/
+http://0.0.0.0:8003/
+https://github.com/login/oauth/authorize?client_id=e709aff2635aeb82880b
+1 跨站访问,使用一个http目录来做认证
+2 访问权限
+3 页面布局
+4 收藏夹扩展
+gihub
+Client ID: e709aff2635aeb82880b
+Client secrets
+350ecd77f22ef351ef4109217fa82e06bdc6ab3d
+https://github.com/login/oauth/authorize?client_id=e709aff2635aeb82880b
+http://4.193.54.245:8002/items
+
+curl -X POST "https://github.com/login/oauth/access_token" \
+     -H "Accept: application/json" \
+     -d "client_id=e709aff2635aeb82880b&client_secret=350ecd77f22ef351ef4109217fa82e06bdc6ab3d&code=82f493b86b6dc0a591bd"
+
+curl -X 'GET' \
+  'http://4.193.54.245:8002/items/' \
+  -H 'Authorization: asdfasdf'

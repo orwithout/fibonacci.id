@@ -1,0 +1,13 @@
+fastapi
+aiofiles
+cryptography
+jose
+passlib
+pydantic
+pydantic_settings
+PyJWT
+python-dotenv
+PyYAML
+Requests
+ruamel.base
+starlette
