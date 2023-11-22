@@ -69,6 +69,6 @@ sudo nginx -t
 sudo systemctl reload nginx
 ```
 
-现在，您应该可以通过访问 `http://fibonacci.id` 来看到相应的内容。  
+现在，您应该可以通过访问 `http://fibonacci.id/0/a00` 来看到相应的内容。  
 （实际部署时，务必将 fibonacci.id 替换为你自己的域名）
 
