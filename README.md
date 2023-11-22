@@ -9,11 +9,11 @@
 **DEMO** v0.0.1: http://fibonacci.id （正在准备中）
 
 
-## 二、开发环境设定
+## 二、安装
 
 1. 克隆项目  
     项目源代码可以直接下载然后解压：https://github.com/orwithout/fibonacci.id/archive/refs/heads/main.zip  
-    如果想要使用git 克隆，需要先安装git软件（下载: https://git-scm.com/downloads ），然后打开电脑系统的命令终端，运行(它会把源代码下载到当前命令终端的工作目录)：
+    如果想要使用git 克隆，需要先安装git软件（下载: https://git-scm.com/downloads ），然后打开电脑系统的命令终端，运行：（它会把源代码下载到当前命令终端的工作目录）
     ```bash
     git clone https://www.github.com/orwithout/fibonacci.id.git
     ```
@@ -21,7 +21,7 @@
 
 
 2. 安装 Python 环境  
-    Windows 系统 安装方法（记得在安装过程中选上“Add Python 3.x to PATH”。如果忘记了，则卸载并再次安装）：https://docs.python.org/zh-cn/3.13/using/windows.html  
+    Windows 系统 安装方法（记得在安装过程中选上“Add Python 3.x to PATH”，如果忘记了，可卸载并再次安装）：https://docs.python.org/zh-cn/3.13/using/windows.html  
     Linux 系统 安装方法：[https://docs.python.org/zh-cn/3.13/using/unix.html](https://docs.python.org/zh-cn/3.13/using/unix.html)
    
 3. 导航到解压或克隆下来的 `fibonacci.id` 目录：
@@ -32,7 +32,7 @@
     ```bash
     pip install -r requirements.txt
     ```
-    *对于windows conda环境 可使用 set_conda.cmd
+    **对于windows conda环境 可使用 set_conda.cmd*
 5. 启动：
     ```bash
     # windows 系统 执行：
@@ -40,7 +40,7 @@
     # Linux系统 执行：
     start.sh
     ```
-6. 访问 http://127.0.0.1:8002/0/a00 可以看到 fibonacci.id/0/a00 中示例数据
+6. 访问 http://127.0.0.1:8002/0/a00 ，然后可以看到浏览器显示 fibonacci.id/0/a00 中的示例数据
 
 
 ### 附：
@@ -58,8 +58,8 @@
     (这将读取并返回项目根目录 0/a00/ 中内容)
 
 
-2. 新建功能模块
-   例如 fibonacci.id/main/m003_ex/hello_world.py ，写入以下内容并保存：
+2. 新建功能模块  
+   例如新建 fibonacci.id/main/m003_ex/hello_world.py ，写入以下内容并保存：
     ```python
     # 存在于文件 fibonacci.id/main/m003_ex/hello_world.py
     import json
@@ -84,10 +84,10 @@
         return data
 
     ```
-    启动访问后，访问：  
+    启动后，访问：  
     http://127.0.0.1:8002/0/a00?fn=m003_ex/hello_world.py&args_in_url=abcxyz&token_in_url=eyJhbGciOiJIUzI……
     （使用?分割路径与参数，使用&分隔多个参数）
-    浏览器将显示
+    浏览器将显示：（这是所有可用的预定义参数变量）
     ```json
     {
         "user_id": "0",
@@ -106,14 +106,12 @@
         "message": "hello world"
     }
     ```
-3. 你的函数若要启用token认证，请在函数的参数定义中添加 verify_token=True ，并将token密钥 赋值在url中的 token_in_url 或header中的 token_in_header变量
-   如果为verify_token=False 则不会验证token  
-   如果未定义 verify_token 参数，则视为 verify_token=True  
-   具体请查看 main/m01_auth 中的模块
+3. 启用token认证  
+   如果要给函数启用token认证，可在函数的参数定义中添加 verify_token=True ，并使用 token_in_url 或 token_in_header 参数变量来传递token密钥。参数变量的使用，请往下看
    
 ## 四、可通过 url 传递的参数变量，以及如何在你要定义的函数中获取
 1. fn  
-   传递方法，url中添加：fn=m003_ex/hello_world.py  
+   前端传递方法，url中添加：fn=m003_ex/hello_world.py  
    函数中如何获取(在参数值声明fn即可)：
    ```python
    def hello_world(verify_token=False, fn:str) {
@@ -129,7 +127,7 @@
    }
    ```
 3. args_in_url  
-   传递方法，url中添加：args_in_url=balabalabulubiubulubiu……  
+   前端传递方法，url中添加：args_in_url=balabalabulubiubulubiu……  
    函数中获取方法(在参数值声明args_in_url)：
    ```python
    def hello_world(verify_token=False, args_in_url:str) {
@@ -137,7 +135,7 @@
    }
    ```
 4. token_in_url
-   传递方法，url中添加：token_in_url=balabalabulubiubulubiu……  
+   前端传递方法，url中添加：token_in_url=balabalabulubiubulubiu……  
    函数中获取方法(在参数值声明token_in_url)：
    ```python
    def hello_world(verify_token=False, token_in_url:str) {
@@ -147,7 +145,7 @@
 
 ## 五、可通过 header 或 body 传递的参数变量  
 1. args_in_header  
-   在http请求头中添加 args_in_header 的赋值  
+   前端在http请求头中添加 args_in_header 的赋值  
    函数获取(在参数值声明 args_in_header 即可)：
    ```python
    def hello_world(verify_token=False, args_in_header:str) {
@@ -155,7 +153,7 @@
    }
    ```
 2. token_in_header  
-   在http请求头中添加 token_in_header 的赋值  
+   前端在http请求头中添加 token_in_header 的赋值  
    函数获取(在参数值声明 token_in_header 即可)：
    ```python
    def hello_world(verify_token=False, token_in_header:str) {
