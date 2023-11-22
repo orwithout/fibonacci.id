@@ -1,19 +1,19 @@
 # senseVine 项目说明
 
-查看： [设计文档](https://github.com/orwithout/sensevine/tree/main/doc)
+查看： 设计文档 （仍在准备中）
 
 
 
 
 ## 一、演示
-**DEMO** v0.0.1: http://fibonacci.id
+**DEMO** v0.0.1: http://fibonacci.id （仍在准备中）
 
 
 ## 二、开发环境设定
 
 1. 克隆项目  
     项目源代码可以直接下载然后解压：https://github.com/orwithout/fibonacci.id/archive/refs/heads/main.zip  
-    如果想要使用git 克隆，需要先安装git软件 （git下载 https://git-scm.com/downloads ），然后打开电脑系统的命令终端，运行以下命令：
+    如果想要使用git 克隆，需要先安装git软件（下载: https://git-scm.com/downloads ），然后打开电脑系统的命令终端，运行(它会把源代码下载到当前命令终端的工作目录)：
     ```bash
     git clone https://www.github.com/orwithout/fibonacci.id.git
     ```
@@ -21,8 +21,7 @@
 
 
 2. 安装 Python 环境  
-    Windows 系统 安装方法：https://docs.python.org/zh-cn/3.13/using/windows.html  
-    （记得在安装过程中选上“Add Python 3.x to PATH”。如果忘记了，则卸载并再次安装）  
+    Windows 系统 安装方法（记得在安装过程中选上“Add Python 3.x to PATH”。如果忘记了，则卸载并再次安装）：https://docs.python.org/zh-cn/3.13/using/windows.html  
     Linux 系统 安装方法：[https://docs.python.org/zh-cn/3.13/using/unix.html](https://docs.python.org/zh-cn/3.13/using/unix.html)
    
 3. 导航到解压或克隆下来的 `fibonacci.id` 目录：
