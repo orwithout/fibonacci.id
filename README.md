@@ -1,12 +1,12 @@
 # senseVine 项目说明
 
-查看： 设计文档 （仍在准备中）
+查看： 设计文档 （正在准备中）
 
 
 
 
 ## 一、演示
-**DEMO** v0.0.1: http://fibonacci.id （仍在准备中）
+**DEMO** v0.0.1: http://fibonacci.id （正在准备中）
 
 
 ## 二、开发环境设定
