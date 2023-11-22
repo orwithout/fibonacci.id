@@ -44,8 +44,8 @@
 
 
 ### 附：
-- [服务化配置（Systemd后台进程守护）](https://github.com/orwithout/fibonacci.id/blob/main/README.systemd.md)
-- [Nginx配置](https://github.com/orwithout/fibonacci.id/blob/main/README.nginx.md)
+- [服务化配置（Systemd后台进程守护）](https://github.com/orwithout/fibonacci.id/blob/main/readme/README.systemd.md)
+- [Nginx配置](https://github.com/orwithout/fibonacci.id/blob/main/readme/README.nginx.md)
 - [fastapi入门参考](https://fastapi.tiangolo.com/zh/#:~:text=%E8%B4%9F%E8%B4%A3%E6%95%B0%E6%8D%AE%E9%83%A8%E5%88%86%E3%80%82-,%E5%AE%89%E8%A3%85,-%C2%B6)
 - [FastAPI 官方文档](https://fastapi.tiangolo.com/zh/)
 - [git克隆github项目方法的更多说明](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
