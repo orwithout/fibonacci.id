@@ -24,7 +24,7 @@
     Windows 系统 安装方法（记得在安装过程中选上“Add Python 3.x to PATH”，如果忘记了，可卸载并再次安装）：https://docs.python.org/zh-cn/3.13/using/windows.html  
     Linux 系统 安装方法：[https://docs.python.org/zh-cn/3.13/using/unix.html](https://docs.python.org/zh-cn/3.13/using/unix.html)
    
-3. 导航到解压或克隆下来的 `fibonacci.id` 目录：
+3. 打开命令行终端，导航到解压或克隆下来的 `fibonacci.id` 目录：
     ```bash
     cd fibonacci.id
     ```
